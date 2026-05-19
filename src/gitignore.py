@@ -34,6 +34,19 @@ def load_gitignore(target: Path) -> List[str]:
     return []
 
 
+def _match_pattern(rel_str: str, name: str, pat: str) -> bool:
+    """Check if a path matches a gitignore pattern, including ** support."""
+    # Convert ** to a form fnmatch can understand
+    if "**" in pat:
+        # Simple ** handling: replace ** with * for basic cases
+        pat = pat.replace("**", "*")
+    
+    if pat.endswith("/"):
+        return fnmatch.fnmatch(rel_str + "/", pat)
+    else:
+        return fnmatch.fnmatch(rel_str, pat) or fnmatch.fnmatch(name, pat)
+
+
 def is_ignored(path: Path, patterns: List[str], root: Path) -> bool:
     """Check if path should be ignored based on gitignore + default ignores."""
     try:
@@ -48,13 +61,18 @@ def is_ignored(path: Path, patterns: List[str], root: Path) -> bool:
     if name in DEFAULT_IGNORES or any(part in DEFAULT_IGNORES for part in rel.parts):
         return True
 
+    ignored = False
+
     for pat in patterns:
         if pat.startswith("!"):
+            # Negation pattern
+            neg_pat = pat[1:]
+            if _match_pattern(rel_str, name, neg_pat):
+                ignored = False
             continue
-        if pat.endswith("/"):
-            if rel.is_dir() and fnmatch.fnmatch(rel_str + "/", pat):
-                return True
-        else:
-            if fnmatch.fnmatch(rel_str, pat) or fnmatch.fnmatch(name, pat):
-                return True
-    return False
+
+        # Normal ignore pattern
+        if _match_pattern(rel_str, name, pat):
+            ignored = True
+
+    return ignored

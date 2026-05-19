@@ -7,7 +7,14 @@ Local-first CLI for auditing code maintainability, privacy risks, and architectu
 - Parallel scanning for good performance on large codebases
 - Reports files scanned + time taken
 - `--stream` mode to print issues as they are discovered
+- `--quiet` and `--verbose` output modes
+- Customizable file extensions via `--ext` or config file
+- Configurable PII allowlist to reduce false positives
 - Pure local operation — no network calls
+
+**Configuration**
+- Project-level: `.driftcode.json` in the scanned directory
+- User-level: `~/.config/driftcode/config.json`
 
 ## Usage
 
@@ -20,6 +27,8 @@ Common options:
 ```bash
 python -m src.cli --path . --format md --privacy --maintainability
 python -m src.cli --path . --format json --privacy --stream
+python -m src.cli --path . --privacy --verbose
+python -m src.cli --path . --privacy --ext .py,.ts
 ```
 
 ### Flags
@@ -31,6 +40,9 @@ python -m src.cli --path . --format json --privacy --stream
 | `--maintainability` | Enable maintainability checks                    |
 | `--stream`          | Print issues immediately as found                |
 | `--output`          | File for full detailed report (default: `driftcode-report.md`) |
+| `--quiet`           | Minimal output                                   |
+| `--verbose`         | Show every file being scanned                    |
+| `--ext`             | Comma-separated list of extensions to scan       |
 
 ## Example Output
 
@@ -62,10 +74,12 @@ python -m pytest tests/
 ```
 
 ## Philosophy
-DriftCode Auditor is designed to be:
-- Fast enough for real-world projects
-- Respectful of existing project structure
-- Simple and dependency-light
-- Local-first and privacy-conscious
+DriftCode Auditor is designed to help developers audit AI-generated code for common and obvious mistakes.
+
+Key goals:
+- Catch simple issues that would otherwise go unnoticed
+- Be fast and respectful of existing project structure (respects `.gitignore`)
+- Stay simple, local-first, and privacy-conscious
+- Provide clear, actionable feedback without false security
 
 All scanning happens on your machine with no data leaving your environment.
