@@ -81,9 +81,14 @@ python -m pytest tests/
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Support the Project
-If you find DriftCode Auditor useful, consider sponsoring its development on [GitHub Sponsors](https://github.com/sponsors/DriftApplied).
 
-Your support helps keep the project maintained and enables future improvements.
+DriftCode Auditor is free and open source, and will remain that way.
+
+If you find it valuable — especially when auditing AI-generated code — consider sponsoring its development on [GitHub Sponsors](https://github.com/sponsors/DriftApplied).
+
+Your support helps sustain focused work on the tool, funds new rule development, and keeps the project moving forward as AI coding practices evolve.
+
+Every sponsor directly contributes to making reliable AI code review more accessible.
 
 ## Philosophy
 DriftCode Auditor is designed to help developers audit AI-generated code for common and obvious mistakes.
