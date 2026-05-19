@@ -32,10 +32,10 @@ python -m driftcode_auditor --path /path/to/project --format md --privacy
 
 Common options:
 ```bash
-python -m src.cli --path . --format md --privacy --maintainability
-python -m src.cli --path . --format json --privacy --stream
-python -m src.cli --path . --privacy --verbose
-python -m src.cli --path . --privacy --ext .py,.ts
+driftcode-auditor --path . --format md --privacy --maintainability
+driftcode-auditor --path . --format json --privacy --stream
+driftcode-auditor --path . --privacy --verbose
+driftcode-auditor --path . --privacy --ext .py,.ts
 ```
 
 ### Flags
