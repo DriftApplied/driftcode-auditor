@@ -80,6 +80,11 @@ python -m pytest tests/
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## Support the Project
+If you find DriftCode Auditor useful, consider sponsoring its development on [GitHub Sponsors](https://github.com/sponsors/DriftApplied).
+
+Your support helps keep the project maintained and enables future improvements.
+
 ## Philosophy
 DriftCode Auditor is designed to help developers audit AI-generated code for common and obvious mistakes.
 
@@ -106,8 +111,23 @@ DriftCode Auditor is designed to help you quickly audit code produced by AI codi
 ### Recommended Workflow
 1. Generate code with your AI assistant
 2. Run `driftcode-auditor` on the changed files
-3. Review flagged issues (especially security and error handling)
+3. Review flagged issues before committing
 4. Use `--output report.md` for a full detailed report
-5. Fix issues before committing
+
+### Example: Catching a Common AI Mistake
+
+**AI-generated code:**
+```python
+def get_user(user_id):
+    return db.query("SELECT * FROM users WHERE id = " + user_id)
+```
+
+**DriftCode Auditor output:**
+```
+- **pii** in `user_service.py:12`: PII in code → `return db.query("SELECT * FROM users WHERE id = " + user_id)`
+- **secret** in `user_service.py:12`: Potential SQL injection risk
+```
+
+This helps catch problems that are easy to miss in normal code review.
 
 This adds a lightweight but effective safety net when working with AI-generated code.
