@@ -1,8 +1,8 @@
 import tempfile
 from pathlib import Path
-from src.scanner import scan_directory
-from src.reporter import generate_report
-from src.gitignore import is_ignored, load_gitignore
+from driftcode_auditor.scanner import scan_directory
+from driftcode_auditor.reporter import generate_report
+from driftcode_auditor.gitignore import is_ignored, load_gitignore
 
 
 def test_scan():

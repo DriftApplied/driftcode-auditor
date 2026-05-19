@@ -88,6 +88,16 @@ def check_maintainability(filepath: Path, lines: List[str]) -> List[Dict]:
                 "msg": "Overly broad except clause (catches everything)",
                 "code": line.strip()
             })
+        
+        # Unhandled promise / async without await (simple heuristic for JS/TS)
+        if filepath.suffix in (".js", ".ts") and ".then(" in line and "catch(" not in line:
+            issues.append({
+                "type": "unhandled_promise",
+                "file": str(filepath),
+                "line": i,
+                "msg": "Promise chain without catch handler",
+                "code": line.strip()
+            })
     return issues
 
 

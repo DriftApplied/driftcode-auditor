@@ -1,0 +1,17 @@
+LICENSE
+README.md
+pyproject.toml
+src/driftcode_auditor/__init__.py
+src/driftcode_auditor/__main__.py
+src/driftcode_auditor/cli.py
+src/driftcode_auditor/config.py
+src/driftcode_auditor/gitignore.py
+src/driftcode_auditor/reporter.py
+src/driftcode_auditor/rules.py
+src/driftcode_auditor/scanner.py
+src/driftcode_auditor.egg-info/PKG-INFO
+src/driftcode_auditor.egg-info/SOURCES.txt
+src/driftcode_auditor.egg-info/dependency_links.txt
+src/driftcode_auditor.egg-info/entry_points.txt
+src/driftcode_auditor.egg-info/top_level.txt
+tests/test_auditor.py
