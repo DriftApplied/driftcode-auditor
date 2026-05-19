@@ -15,7 +15,11 @@ from .config import load_config, DEFAULT_CONFIG
 
 def _process_file(filepath: Path, privacy: bool, maintainability: bool, pii_allowlist: List[str] = None) -> List[Dict]:
     try:
+        if not filepath.is_file():
+            return []
         content = filepath.read_text(errors='ignore')
+        if not content.strip():
+            return []
         lines = content.splitlines()
         issues = []
         if maintainability or not (privacy or maintainability):
@@ -25,10 +29,19 @@ def _process_file(filepath: Path, privacy: bool, maintainability: bool, pii_allo
         issues.extend(check_architecture(filepath, lines))
         return issues
     except Exception:
+        # Gracefully handle any file reading or processing errors
         return []
 
 
-def scan_directory(target: Path, privacy: bool, maintainability: bool, stream: bool = False, verbose: bool = False, custom_extensions: list = None) -> Tuple[List[Dict], int, float]:
+def scan_directory(
+    target: Path,
+    privacy: bool,
+    maintainability: bool,
+    *,
+    stream: bool = False,
+    verbose: bool = False,
+    custom_extensions: list = None
+) -> Tuple[List[Dict], int, float]:
     """Returns (issues, files_scanned, elapsed_seconds)"""
     start = time.time()
     issues = []

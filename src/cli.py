@@ -15,7 +15,13 @@ from .reporter import generate_report
 
 
 def main():
-    parser = argparse.ArgumentParser(description="DriftCode Auditor: Local code audit tool")
+    parser = argparse.ArgumentParser(
+        description="DriftCode Auditor - Audit AI-generated code for common mistakes",
+        epilog="Examples:\n"
+               "  python -m src --path . --privacy --maintainability\n"
+               "  python -m src --path . --privacy --verbose\n"
+               "  python -m src --path . --ext .py,.ts --output report.md"
+    )
     parser.add_argument("--path", default=".", help="Target directory to scan")
     parser.add_argument("--format", choices=["md", "json"], default="md", help="Output format")
     parser.add_argument("--privacy", action="store_true", help="Focus on privacy risks")
@@ -25,6 +31,7 @@ def main():
     parser.add_argument("--quiet", action="store_true", help="Minimal output")
     parser.add_argument("--verbose", action="store_true", help="Show every file being scanned")
     parser.add_argument("--ext", help="Comma-separated list of extensions to scan (e.g. .py,.js,.ts)")
+    parser.add_argument("--version", action="version", version="DriftCode Auditor 0.2.0")
     args = parser.parse_args()
 
     target = Path(args.path).resolve()

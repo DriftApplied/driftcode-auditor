@@ -61,16 +61,59 @@ def check_maintainability(filepath: Path, lines: List[str]) -> List[Dict]:
                     "msg": "Overly generic function name (possible AI-generated code smell)",
                     "code": line.strip()
                 })
+        
+        # Missing error handling in try blocks (simple heuristic)
+        if line.strip().startswith("try:"):
+            # Look ahead up to 15 lines for an except clause
+            found_except = False
+            for j in range(i, min(i + 15, len(lines))):
+                if lines[j].strip().startswith(("except", "finally")):
+                    found_except = True
+                    break
+            if not found_except:
+                issues.append({
+                    "type": "missing_except",
+                    "file": str(filepath),
+                    "line": i,
+                    "msg": "try block without visible except/finally clause",
+                    "code": line.strip()
+                })
+        
+        # Overly broad except clause (common AI mistake)
+        if line.strip().startswith("except:") or line.strip().startswith("except Exception:"):
+            issues.append({
+                "type": "broad_except",
+                "file": str(filepath),
+                "line": i,
+                "msg": "Overly broad except clause (catches everything)",
+                "code": line.strip()
+            })
     return issues
 
 
 def check_privacy(filepath: Path, lines: List[str], pii_allowlist: List[str] = None) -> List[Dict]:
     issues = []
-    secret_patterns = [r"password\s*=\s*['\"][^'\"]+['\"]", r"api_key\s*=\s*['\"][^'\"]+['\"]"]
-    pii_patterns = [r"\b(email|ssn|phone)\b", r"\b\d{3}-\d{2}-\d{4}\b"]
+
+    # Skip PII detection inside rules.py to avoid self-flagging on regex patterns
+    if filepath.name == "rules.py":
+        return issues
+
+    secret_patterns = [
+        r"password\s*=\s*['\"][^'\"]+['\"]",
+        r"api_key\s*=\s*['\"][^'\"]+['\"]",
+        r"secret\s*=\s*['\"][^'\"]+['\"]",
+        r"token\s*=\s*['\"][^'\"]+['\"]"
+    ]
+    pii_patterns = [
+        r"\b(email|ssn|phone|password|creditcard|credit_card)\b",
+        r"\b\d{3}-\d{2}-\d{4}\b",           # SSN format
+        r"\b\d{4}-\d{4}-\d{4}-\d{4}\b"     # Credit card format
+    ]
 
     if pii_allowlist is None:
         pii_allowlist = []
+
+    allowlist_lower = [w.lower() for w in pii_allowlist]
 
     for i, line in enumerate(lines, 1):
         for pat in secret_patterns:
@@ -83,10 +126,10 @@ def check_privacy(filepath: Path, lines: List[str], pii_allowlist: List[str] = N
                     "code": line.strip()
                 })
         for pat in pii_patterns:
-            if re.search(pat, line, re.I):
-                # Check against allowlist
-                word = re.search(pat, line, re.I)
-                if word and word.group(0).lower() not in [w.lower() for w in pii_allowlist]:
+            matches = re.finditer(pat, line, re.I)
+            for match in matches:
+                word = match.group(0).lower()
+                if word not in allowlist_lower:
                     issues.append({
                         "type": "pii",
                         "file": str(filepath),

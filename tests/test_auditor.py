@@ -32,7 +32,7 @@ def test_gitignore_default_ignores():
         issues, files_scanned, _ = scan_directory(root, True, False)
         # Should only find the issue in good.py, not inside node_modules
         assert files_scanned == 1
-        assert len(issues) == 1
+        assert len(issues) == 2  # secret + pii (password)
 
 
 def test_scan_returns_stats():
