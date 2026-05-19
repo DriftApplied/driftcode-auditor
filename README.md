@@ -2,6 +2,8 @@
 
 Local-first CLI for auditing code maintainability, privacy risks, and architecture drift.
 
+> **License:** MIT — Free to use, modify, and distribute.
+
 ## Features
 - Automatically respects `.gitignore` and common build directories (`.next`, `node_modules`, `dist`, `.git`, etc.)
 - Parallel scanning for good performance on large codebases
@@ -20,8 +22,10 @@ Local-first CLI for auditing code maintainability, privacy risks, and architectu
 
 Basic scan:
 ```bash
-python -m src.cli --path /path/to/project --format md --privacy
+python -m src --path /path/to/project --format md --privacy
 ```
+
+(You can also use `python -m src.cli`, but `python -m src` is the recommended way.)
 
 Common options:
 ```bash
@@ -73,6 +77,9 @@ When many issues are found, only the first 15 per category are shown, followed b
 python -m pytest tests/
 ```
 
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 ## Philosophy
 DriftCode Auditor is designed to help developers audit AI-generated code for common and obvious mistakes.
 
@@ -83,3 +90,24 @@ Key goals:
 - Provide clear, actionable feedback without false security
 
 All scanning happens on your machine with no data leaving your environment.
+
+## Reviewing AI-Generated Code
+
+DriftCode Auditor is designed to help you quickly audit code produced by AI coding assistants (Claude, Cursor, Copilot, etc.).
+
+### Common Issues It Catches
+- Missing or fake error handling
+- Hardcoded secrets and credentials
+- Overly generic function names
+- Architectural drift and pattern violations
+- Missing edge case handling
+- Potential PII / secret leaks
+
+### Recommended Workflow
+1. Generate code with your AI assistant
+2. Run `driftcode-auditor` on the changed files
+3. Review flagged issues (especially security and error handling)
+4. Use `--output report.md` for a full detailed report
+5. Fix issues before committing
+
+This adds a lightweight but effective safety net when working with AI-generated code.
