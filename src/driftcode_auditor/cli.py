@@ -50,7 +50,7 @@ def main():
 
     # Always generate full detailed report
     full_report = generate_report(issues, args.format, target, full=True)
-    Path(args.output).write_text(full_report)
+    Path(args.output).write_text(full_report, encoding="utf-8")
 
     if not args.quiet and not args.stream:
         summary_report = generate_report(issues, args.format, target, full=False)
