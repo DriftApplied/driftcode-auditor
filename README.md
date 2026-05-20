@@ -1,6 +1,11 @@
 # driftcode-auditor
 
-Local-first CLI for auditing code maintainability, privacy risks, and architecture drift.
+[![PyPI version](https://img.shields.io/pypi/v/driftcode-auditor.svg)](https://pypi.org/project/driftcode-auditor/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub stars](https://img.shields.io/github/stars/DriftApplied/driftcode-auditor.svg)](https://github.com/DriftApplied/driftcode-auditor/stargazers)
+[![GitHub Sponsors](https://img.shields.io/badge/sponsor-GitHub-blue?logo=github)](https://github.com/sponsors/DriftApplied)
+
+**Local-first CLI for auditing AI-generated code** — catch common mistakes in Cursor, Claude, Copilot, and other AI coding output before they reach production.
 
 > **License:** MIT — Free to use, modify, and distribute.
 
@@ -113,6 +118,16 @@ python -m pytest tests/
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Contributions are welcome — especially new rules, documentation improvements, and bug reports.
+
+- See [GitHub Discussions](https://github.com/DriftApplied/driftcode-auditor/discussions) for ideas and feedback.
+- Look for issues labeled `good first issue` or `help wanted`.
+- For larger changes, please open an issue first.
+
+We especially appreciate contributions from people who use AI coding tools daily (Cursor, Claude, Copilot, etc.) and want to help catch more real-world mistakes.
 
 ## Support the Project
 
