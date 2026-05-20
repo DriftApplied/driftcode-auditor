@@ -18,9 +18,40 @@ Local-first CLI for auditing code maintainability, privacy risks, and architectu
 - Project-level: `.driftcode.json` in the scanned directory
 - User-level: `~/.config/driftcode/config.json`
 
+## Installation
+
+**Recommended** (avoids system Python conflicts on modern distributions):
+
+```bash
+pipx install driftcode-auditor
+```
+
+Or with a virtual environment:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install driftcode-auditor
+```
+
+Then run:
+
+```bash
+driftcode-auditor --help
+```
+
+**Windows users**: If `driftcode-auditor` is not found after `pip install`, use the module form instead:
+
+```cmd
+python -m driftcode_auditor --help
+```
+
+### Troubleshooting: externally-managed-environment error
+This error occurs on PEP 668 systems (Ubuntu 23.04+, Debian 12+, etc.). Use `pipx` or an explicit virtual environment as shown above.
+
 ## Usage
 
-Basic scan (after installation):
+Basic scan:
 ```bash
 driftcode-auditor --path /path/to/project --format md --privacy
 ```
@@ -89,9 +120,13 @@ DriftCode Auditor is free and open source, and will remain that way.
 
 If you find it valuable — especially when auditing AI-generated code — consider sponsoring its development on [GitHub Sponsors](https://github.com/sponsors/DriftApplied).
 
+Pro sponsors receive a manual invitation to a private repository containing advanced AI rules, priority support, and early access to new features.
+
 Your support helps sustain focused work on the tool, funds new rule development, and keeps the project moving forward as AI coding practices evolve.
 
 Every sponsor directly contributes to making reliable AI code review more accessible.
+
+See [CHANGELOG.md](CHANGELOG.md) for release history.
 
 ## Philosophy
 DriftCode Auditor is designed to help developers audit AI-generated code for common and obvious mistakes.
@@ -139,3 +174,7 @@ def get_user(user_id):
 This helps catch problems that are easy to miss in normal code review.
 
 This adds a lightweight but effective safety net when working with AI-generated code.
+
+## DriftCode Auditor Pro (Paid)
+
+Pro features are delivered via a separate private repository for sponsors (see [PAID_OFFERING.md](PAID_OFFERING.md)). The free CLI has no access to paid features.
