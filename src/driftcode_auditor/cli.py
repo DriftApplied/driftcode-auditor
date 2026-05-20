@@ -31,7 +31,7 @@ def main():
     parser.add_argument("--quiet", action="store_true", help="Minimal output")
     parser.add_argument("--verbose", action="store_true", help="Show every file being scanned")
     parser.add_argument("--ext", help="Comma-separated list of extensions to scan (e.g. .py,.js,.ts)")
-    parser.add_argument("--version", action="version", version="DriftCode Auditor 0.2.0")
+    parser.add_argument("--version", action="version", version="DriftCode Auditor 0.2.1")
     args = parser.parse_args()
 
     target = Path(args.path).resolve()
