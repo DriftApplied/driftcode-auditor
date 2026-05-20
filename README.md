@@ -156,6 +156,10 @@ All scanning happens on your machine with no data leaving your environment.
 
 ## Reviewing AI-Generated Code
 
+**Quickly audit AI-generated code** from Cursor, Claude, Copilot, Windsurf and other AI coding tools.
+
+A short terminal demo / asciicast will be added here shortly (recording in progress).
+
 DriftCode Auditor is designed to help you quickly audit code produced by AI coding assistants (Claude, Cursor, Copilot, etc.).
 
 ### Common Issues It Catches
