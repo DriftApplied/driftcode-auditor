@@ -190,6 +190,34 @@ def get_user(user_id):
 - **secret** in `user_service.py:12`: Potential SQL injection risk
 ```
 
+### More Quick Examples
+
+**AI-generated code:**
+```python
+def sync_profile(user_id):
+    try:
+        return api.fetch_profile(user_id)
+    except Exception:
+        return None
+```
+
+**DriftCode Auditor output:**
+```
+- **broad_except** in `profile_sync.py:4`: Overly broad except clause (catches everything) → `except Exception:`
+```
+
+**AI-generated code:**
+```python
+def call_provider():
+    api_key = "sk-test-123456"
+    return client.run(api_key=api_key)
+```
+
+**DriftCode Auditor output:**
+```
+- **secret** in `provider.py:2`: Hardcoded secret → `api_key = "sk-test-123456"`
+```
+
 This helps catch problems that are easy to miss in normal code review.
 
 This adds a lightweight but effective safety net when working with AI-generated code.
