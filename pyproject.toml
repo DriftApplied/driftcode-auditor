@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "driftcode-auditor"
-version = "0.2.1"
+version = "0.2.2"
 description = "Local-first CLI for auditing AI-generated code for common mistakes"
 readme = "README.md"
 license = {text = "MIT"}

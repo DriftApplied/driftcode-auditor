@@ -26,8 +26,12 @@ def _load_json_config(path: Path) -> Dict[str, Any]:
         try:
             with open(path, "r") as f:
                 return json.load(f)
-        except Exception:
+        except (json.JSONDecodeError, OSError, PermissionError):
+            # Malformed config or permission issues are common and non-fatal
             return {}
+        except Exception:
+            # Unexpected error — re-raise so we don't hide bugs in the tool
+            raise
     return {}
 
 

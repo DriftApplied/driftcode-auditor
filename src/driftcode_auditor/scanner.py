@@ -28,9 +28,12 @@ def _process_file(filepath: Path, privacy: bool, maintainability: bool, pii_allo
             issues.extend(check_privacy(filepath, lines, pii_allowlist or []))
         issues.extend(check_architecture(filepath, lines))
         return issues
-    except Exception:
-        # Gracefully handle any file reading or processing errors
+    except (OSError, UnicodeDecodeError, PermissionError):
+        # Expected issues when scanning real user codebases (permissions, binary files, encoding, etc.)
         return []
+    except Exception:
+        # Unexpected error in the scanner itself — re-raise so we don't silently hide bugs
+        raise
 
 
 def scan_directory(
