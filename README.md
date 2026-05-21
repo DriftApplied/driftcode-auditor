@@ -176,9 +176,9 @@ DriftCode Auditor is designed to help you quickly audit code produced by AI codi
 3. Review flagged issues before committing
 4. Use `--output report.md` for a full detailed report
 
-### Example: Catching a Common AI Mistake
+### Examples: Catching Common AI Mistakes
 
-**AI-generated code:**
+**AI-generated code (SQL injection risk + PII):**
 ```python
 def get_user(user_id):
     return db.query("SELECT * FROM users WHERE id = " + user_id)
@@ -190,9 +190,7 @@ def get_user(user_id):
 - **secret** in `user_service.py:12`: Potential SQL injection risk
 ```
 
-### More Quick Examples
-
-**AI-generated code:**
+**AI-generated code (overly broad except):**
 ```python
 def sync_profile(user_id):
     try:
@@ -203,10 +201,10 @@ def sync_profile(user_id):
 
 **DriftCode Auditor output:**
 ```
-- **broad_except** in `profile_sync.py:4`: Overly broad except clause (catches everything) → `except Exception:`
+- **broad_except** in `profile.py:4`: Overly broad except clause (catches everything) → `except Exception:`
 ```
 
-**AI-generated code:**
+**AI-generated code (hardcoded secret):**
 ```python
 def call_provider():
     api_key = "sk-test-123456"
@@ -217,6 +215,8 @@ def call_provider():
 ```
 - **secret** in `provider.py:2`: Hardcoded secret → `api_key = "sk-test-123456"`
 ```
+
+> **Tip:** Use `--privacy --maintainability` (or the config file) to enable all checks shown above.
 
 This helps catch problems that are easy to miss in normal code review.
 
