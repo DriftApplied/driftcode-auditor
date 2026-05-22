@@ -28,10 +28,12 @@ def generate_report(issues: List[Dict], fmt: str, target: Path, full: bool = Fal
         for cat, iss in categories.items():
             if iss:
                 md += f"## {cat.capitalize()}\n"
-            for i in iss:
-                code = f" → `{i.get('code', '')}`" if 'code' in i else ""
-                md += f"- **{i['type']}** in `{i['file']}:{i['line']}`: {i['msg']}{code}\n"
+                for i in iss:
+                    code = f" → `{i.get('code', '')}`" if 'code' in i else ""
+                    md += f"- **{i['type']}** in `{i['file']}:{i['line']}`: {i['msg']}{code}\n"
                 md += "\n"
+        if not any(categories.values()):
+            md += "- Nothing to report in this category\n"
     else:
         # Summarized report for console
         MAX_SHOWN = 15

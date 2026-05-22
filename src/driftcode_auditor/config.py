@@ -29,9 +29,6 @@ def _load_json_config(path: Path) -> Dict[str, Any]:
         except (json.JSONDecodeError, OSError, PermissionError):
             # Malformed config or permission issues are common and non-fatal
             return {}
-        except Exception:
-            # Unexpected error — re-raise so we don't hide bugs in the tool
-            raise
     return {}
 
 

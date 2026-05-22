@@ -18,27 +18,32 @@ def check_maintainability(filepath: Path, lines: List[str]) -> List[Dict]:
                 "line": i, 
                 "msg": "Line >100 chars",
                 "code": line.strip()
-            })
+                    })
         
-        # Long function detection
-        if line.strip().startswith("def ") and i + 30 < len(lines):
+        # Long function detection: flag only when at least 30 lines remain ahead
+        if line.strip().startswith("def ") and 30 <= len(lines) - i:
             issues.append({
                 "type": "long_func", 
                 "file": str(filepath), 
                 "line": i, 
                 "msg": "Potential long function (>30 lines)",
                 "code": line.strip()
-            })
+                    })
         
-        # Too many parameters (simple heuristic)
-        if "def " in line and line.count(",") >= 5:
-            issues.append({
+        # Too many parameters (only count inside the call parentheses)
+        paren_start = line.find("(")
+        if paren_start != -1:
+            paren_end = line.find(")", paren_start)
+            if paren_end != -1:
+                inside = line[paren_start + 1:paren_end]
+                if inside.count(",") >= 5:
+                    issues.append({
                 "type": "too_many_params",
                 "file": str(filepath),
                 "line": i,
                 "msg": "Function with many parameters",
                 "code": line.strip()
-            })
+                    })
         
         # TODO/FIXME comments
         if any(marker in line.upper() for marker in ["TODO", "FIXME", "HACK"]):
@@ -48,7 +53,7 @@ def check_maintainability(filepath: Path, lines: List[str]) -> List[Dict]:
                 "line": i,
                 "msg": "TODO/FIXME/HACK comment",
                 "code": line.strip()
-            })
+                    })
         
         # Common AI-generated code smell: overly generic function names
         if line.strip().startswith("def "):
@@ -87,7 +92,7 @@ def check_maintainability(filepath: Path, lines: List[str]) -> List[Dict]:
                 "line": i,
                 "msg": "Overly broad except clause (catches everything)",
                 "code": line.strip()
-            })
+                    })
         
         # Unhandled promise / async without await (simple heuristic for JS/TS)
         if filepath.suffix in (".js", ".ts") and ".then(" in line and "catch(" not in line:
@@ -105,8 +110,7 @@ def check_privacy(filepath: Path, lines: List[str], pii_allowlist: List[str] = N
     issues = []
 
     # Skip PII detection inside rules.py to avoid self-flagging on regex patterns
-    if filepath.name == "rules.py":
-        return issues
+
 
     secret_patterns = [
         r"password\s*=\s*['\"][^'\"]+['\"]",
