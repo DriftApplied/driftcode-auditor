@@ -6,6 +6,7 @@ Privacy-conscious: no network, scans for risks locally.
 
 import argparse
 import os
+import importlib.metadata
 import re
 from pathlib import Path
 from typing import List, Dict, Any
@@ -18,9 +19,9 @@ def main():
     parser = argparse.ArgumentParser(
         description="DriftCode Auditor - Audit AI-generated code for common mistakes",
         epilog="Examples:\n"
-               "  python -m src --path . --privacy --maintainability\n"
-               "  python -m src --path . --privacy --verbose\n"
-               "  python -m src --path . --ext .py,.ts --output report.md"
+               "  driftcode-auditor --path . --privacy --maintainability\n"
+               "  driftcode-auditor --path . --privacy --verbose\n"
+               "  driftcode-auditor --path . --ext .py,.ts --output report.md"
     )
     parser.add_argument("--path", default=".", help="Target directory to scan")
     parser.add_argument("--format", choices=["md", "json"], default="md", help="Output format")
@@ -31,7 +32,7 @@ def main():
     parser.add_argument("--quiet", action="store_true", help="Minimal output")
     parser.add_argument("--verbose", action="store_true", help="Show every file being scanned")
     parser.add_argument("--ext", help="Comma-separated list of extensions to scan (e.g. .py,.js,.ts)")
-    parser.add_argument("--version", action="version", version="DriftCode Auditor 0.2.1")
+    parser.add_argument("--version", action="version", version=f"DriftCode Auditor {importlib.metadata.version('driftcode-auditor')}")
     args = parser.parse_args()
 
     target = Path(args.path).resolve()
@@ -42,7 +43,7 @@ def main():
     if not args.quiet:
         print(f"Scanning {target} ... (skipping common build dirs)")
 
-    custom_extensions = args.ext.split(",") if args.ext else None
+    custom_extensions = [e.strip() for e in args.ext.split(",")] if args.ext else None
     issues, files_scanned, elapsed = scan_directory(
         target, args.privacy, args.maintainability, stream=args.stream, verbose=args.verbose,
         custom_extensions=custom_extensions
